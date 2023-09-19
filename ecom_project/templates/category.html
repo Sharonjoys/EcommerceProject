@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+ {% if category %}
+  {{category.description|truncatewords:155}}
+{% else %}
+  welcome to clothes store where you can buy different items.....
+{% endif %}
+{% endblock %}
+
+{% block title %}
+ {% if category %}
+  {{category.name}}---my store
+{% else %}
+ new store
+{% endif %}
+{% endblock %}
+{% block content %}
+{% if category %}
+
+ <div class="row my_row_class">
+  <div class="mx_auto">
+  <p><a href="{% url 'ecom_app:allprodcat' %}">See Our Product Collections: {{category.name}}</a></p>
+ </div>
+  </div>
+
+{% endif %}
+<div class="mx_auto">
+ {% if category %}
+ <center>
+ <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}">
+  </center>
+</div>
+<br>
+<div>
+ <h1 class="text-center my_title">{{category.name}}</h1>
+ <p class="text-justify">{{category.description}}</p>
+</div>
+{% else %}
+<div class="container-fluid">
+ <div>
+  <center>
+<img class="my_image my_image_padding" src="{% static 'img/cbanner.png' %}" alt="Our Products" width="1500px;">
+   </center>
+  </div>
+</div>
+<br>
+<div>
+ <center>
+ <h1 class="my_title">Our Products Collections</h1>
+  </center>
+ <div class="container-fluid">
+  <div>
+ <p class="text-justify">The word Lorem Ipsum is derived from the Latin word which means “pain itself”. It is a kind of a text filler tool that is used by the webmaster on the website.Basically, this tool is used to create
+  dummy content on the website when it’s new. Why Lorem Ipsum Is Used? It helps the designer plan where the content will sit. It helps in creating drafts of the content on the pages of the website. It
+  originates from the Latin textbut is seen as gibberish.Sometimes, the reader gets distracted while creating or working on the website. That’s why this language is important.This tool makes the work easier
+  for the webmaster.</p>
+   </div>
+  </div>
+</div>
+{% endif %}
+<div class="container">
+ <div class="row mx_auto">
+  {% for pro in product.object_list %}
+  <div class="my_bottom_margin col-9 col-sm-12 col-md-4  col-lg-4">
+   <div class="card text-center" style="min-width:1rem">
+    <a href="{{pro.get_url}}"><img class="card-img-top my_image" src="{{pro.image.url}}" alt="{{pro.name}}"></a>
+    <div class="card-body">
+     <h4>{{pro.name}}</h4>
+     <p>{{pro.prize}}</p>
+    </div>
+   </div>
+   <br>
+  </div>
+  {% endfor %}
+</div>
+ </div>
+<div class="mx_auto">
+ {% if product.paginator.num_pages > 1 %}
+
+
+ <div class="text-center">
+  {% for pg in product.paginator.page_range %}
+  <a href="?page={{pg}}" class="btn btn-light btn-sm {% if product.number == pg %} active {% endif %}">{{pg}}</a>
+  {% endfor %}
+ </div>
+ {% endif %}
+</div>
+ <br>
+</div>
+
+{% endblock %}
